@@ -7,12 +7,12 @@
 !Mersenne twister.
 include 'mt19937.f90'
 program D3YM
-
+  
   use mtmod !Mersenne twistor
   implicit none
   include 'size.h'
   include 'include.h'
-
+  
   double precision pol_phase(1:nmat,1:nx,1:ny),Pol_re,Pol_im
   
   open(unit=10,status='OLD',file='input_v1.dat',action='READ')
@@ -65,13 +65,13 @@ program D3YM
   !**************************************************
   nacceptance=0 !number of acceptance
   ntrial=0 !number of trial
-
+  
   !************************************
   !************************************
   !     Make the output file
   !************************************
   !************************************
-
+  
   open(unit=10,status='REPLACE',file=data_output,action='WRITE')
   open(unit=20,status='REPLACE',file=output_pol,action='WRITE')
   write(10,*) "#size of the gauge group: nmat=",nmat
@@ -80,13 +80,10 @@ program D3YM
   write(10,*) "#dtau for U_x,U_y=",Dtau_s
   write(10,*) "# traj, energy, Re(Pol.), Im(Pol.), acceptance"
   write(10,*) "#------------------------------------------------"
-
-
-
   nacceptance=0
   ntrial=0
   do while (itraj.LE.ntraj)
-
+     
      backup_umat=umat
      call Generate_P_umat(P_umat)
      call Calc_Ham(at,as,umat,P_umat,ham_init)
@@ -102,19 +99,20 @@ program D3YM
         !reject
         umat=backup_umat
      end If
-
-    ! write(*,*)itraj,-ham_init+ham_fin,dble(nacceptance)/dble(ntrial)
-
+     
+     ! write(*,*)itraj,-ham_init+ham_fin,dble(nacceptance)/dble(ntrial)
+     
      ! measurements
      if(MOD(itraj,nskip).EQ.0)then
-
-        call Calc_action(at,as,umat,action)
+        
+        !call Calc_action(at,as,umat,action)
+        
+        call Calc_spatial_plaquette(umat,spatial_plaquette)
         call Calc_Polyakov(umat,Pol_re,Pol_im,Pol_phase)
 
-
-        write(10,*)itraj,-ham_init+ham_fin,action/dble(nx*ny*nt),&
+        write(10,*)itraj,-ham_init+ham_fin,spatial_plaquette,&
              &Pol_re,Pol_im,dble(nacceptance)/dble(ntrial)
-        write(*,*)itraj,-ham_init+ham_fin,action/dble(nx*ny*nt),&
+        write(*,*)itraj,-ham_init+ham_fin,spatial_plaquette,&
              &Pol_re,Pol_im,dble(nacceptance)/dble(ntrial)
         do ix=1,nx
            do iy=1,ny
@@ -161,4 +159,4 @@ include 'Molecular_Dynamics.f90'
 include 'set_boundary_condition.f90'
 include 'Calc_DELH.f90'
 include 'Calc_Polyakov.f90'
-
+include 'Calc_plaquette.f90'

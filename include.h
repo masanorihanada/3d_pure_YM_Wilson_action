@@ -31,6 +31,7 @@ double complex umat(1:nmat,1:nmat,0:nt+1,0:nx+1,0:ny+1,1:ndim)
 
   !absolute value of Polyakov loop
   double precision Pol_local(1:nx,1:ny),Pol
+    double precision spatial_plaquette
 
   !energy, action, etc
     double precision energy,action, trx2, trf2,trace
@@ -38,3 +39,5 @@ character(150) input_config,data_output,output_config,output_pol
 
 !For Mersenne Twister
 integer mersenne_seed
+
+				     
