@@ -78,7 +78,7 @@ program D3YM
   write(10,*) "#ntau=",ntau
   write(10,*) "#dtau for U_t=",Dtau_t
   write(10,*) "#dtau for U_x,U_y=",Dtau_s
-  write(10,*) "# traj, spatial_plaquette, Re(Pol.), Im(Pol.), acceptance"
+  write(10,*) "# traj, ham_fin - ham_init, spatial_plaquette, Re(Pol.), Im(Pol.), acceptance"
   write(10,*) "#------------------------------------------------"
   nacceptance=0
   ntrial=0
