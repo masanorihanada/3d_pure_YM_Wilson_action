@@ -3,6 +3,7 @@
 !######                                                               #########
 !######                 written by Masanori Hanada                    #########
 !######                                                               #########
+!####  The definition of g^2 is factor 2 different from the orbifold lattice ##
 !##############################################################################
 !Mersenne twister.
 include 'mt19937.f90'
