@@ -20,7 +20,6 @@ program D3YM
   read(10,*) input_config
   read(10,*) output_config
   read(10,*) data_output
-  read(10,*) output_pol
   read(10,*) init
   read(10,*) at
   read(10,*) as
@@ -74,12 +73,11 @@ program D3YM
   !************************************
   
   open(unit=10,status='REPLACE',file=data_output,action='WRITE')
-  open(unit=20,status='REPLACE',file=output_pol,action='WRITE')
-  write(10,*) "#size of the gauge group: nmat=",nmat
+   write(10,*) "#size of the gauge group: nmat=",nmat
   write(10,*) "#ntau=",ntau
   write(10,*) "#dtau for U_t=",Dtau_t
   write(10,*) "#dtau for U_x,U_y=",Dtau_s
-  write(10,*) "# traj, ham_fin - ham_init, spatial_plaquette, Re(Pol.), Im(Pol.), acceptance"
+  write(10,*) "# traj, ham_fin - ham_init, spatial_plaquette, temporal_plaquette, Re(Pol.), Im(Pol.), acceptance"
   write(10,*) "#------------------------------------------------"
   nacceptance=0
   ntrial=0
@@ -108,22 +106,14 @@ program D3YM
         
         !call Calc_action(at,as,umat,action)
         
-        call Calc_spatial_plaquette(umat,spatial_plaquette)
+        call Calc_plaquette(umat,spatial_plaquette,temporal_plaquette)
         call Calc_Polyakov(umat,Pol_re,Pol_im,Pol_phase)
 
-        write(10,*)itraj,-ham_init+ham_fin,spatial_plaquette,&
+        write(10,*)itraj,-ham_init+ham_fin,spatial_plaquette,temporal_plaquette,&
              &Pol_re,Pol_im,dble(nacceptance)/dble(ntrial)
-        write(*,*)itraj,-ham_init+ham_fin,spatial_plaquette,&
+        write(*,*)itraj,-ham_init+ham_fin,spatial_plaquette,temporal_plaquette,&
              &Pol_re,Pol_im,dble(nacceptance)/dble(ntrial)
-        do ix=1,nx
-           do iy=1,ny
-              !do imat=1,nmat
-                 !write(20,*)ix,iy,imat,pol_phase(imat,ix,iy)
-                 write(20,*)pol_phase(1,ix,iy),pol_phase(2,ix,iy)
-              !end do
-           end do
-        end do
-     end if
+      end if
 
      itraj=itraj+1
   end do
