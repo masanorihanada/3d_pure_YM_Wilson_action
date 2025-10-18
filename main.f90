@@ -116,6 +116,8 @@ program D3YM
              &Pol_re,Pol_im,dble(nacceptance)/dble(ntrial)
       end if
 
+      call SU_N_projection_all(umat)
+      
      itraj=itraj+1
   end do
   !**************************************************
@@ -152,3 +154,5 @@ include 'set_boundary_condition.f90'
 include 'Calc_DELH.f90'
 include 'Calc_Polyakov.f90'
 include 'Calc_plaquette.f90'
+include 'unitary_projection.f90'
+include 'MATRIX_DET_COMPLEX.f90'
