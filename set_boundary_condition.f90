@@ -1,5 +1,3 @@
-! umat -> exp(i*P_umat*dtau_umat)*umat
-! P_umat -> P_umat - delh_umat*dtau_umat
 subroutine set_bc(umat)
 
   implicit none
