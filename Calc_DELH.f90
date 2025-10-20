@@ -22,6 +22,7 @@ SUBROUTINE Calc_DELH(at,as,umat,delh_umat)
   double complex udu(1:nmat,1:nmat,1:ndim,1:ndim)
   double complex uuudud(1:nmat,1:nmat,1:ndim,1:ndim)
   double complex uududu(1:nmat,1:nmat,1:ndim,1:ndim)
+  double complex trace
 
   delh_umat=(0d0,0d0)
   
@@ -138,6 +139,29 @@ SUBROUTINE Calc_DELH(at,as,umat,delh_umat)
         end do
      end do
   end do
+
+  !*************************************
+  !*** Traceless projection ************
+  !*** (needed because Z is complex) ***
+  !*************************************
+  do idim=1,ndim
+     do it=1,nt
+        do ix=1,nx
+           do iy=1,ny
+              trace=(0d0,0d0)
+              do imat=1,nmat
+                 trace = trace + delh_umat(imat,imat,it,ix,iy,idim)
+              end do
+              do imat=1,nmat
+                 delh_umat(imat,imat,it,ix,iy,idim) = &
+                      &delh_umat(imat,imat,it,ix,iy,idim) - trace/dcmplx(nmat)
+              end do
+           end do
+        end do
+     end do
+  end do
+  
+  return
   
   return
 
